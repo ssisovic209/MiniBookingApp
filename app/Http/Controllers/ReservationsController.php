@@ -8,17 +8,18 @@ use Illuminate\Http\Request;
 
 class ReservationsController extends Controller
 {
-    public function index()
+public function index()
     {
       $reservations = \App\Reservation::all();
-      return view('/reservations/index', compact('reservations'));
+      return response()->json($reservations);
     }
 
 
     public function create()
     {
       $reservations = \App\Reservation::all();
-      return view('/reservations/create');
+      //return view('/reservations/create');
+      return response()->json($reservations);
     }
 
 
@@ -36,9 +37,10 @@ class ReservationsController extends Controller
 
       $diff =strtotime($reservation->date_from)-strtotime($reservation->date_to);
       $reservation->total_price = $reservation->unit->price_per_night*abs(round($diff/86400));
-      // 1 day = 24 hours ,  24 * 60 * 60 = 86400 seconds 
+      // 1 day = 24 hours ,  24 * 60 * 60 = 86400 seconds
 
       $reservation->save();
+      //return response()->json($reservation);
 
       // $validated=request()->validate([
       //   'date_from'=> ['required'],
@@ -52,23 +54,26 @@ class ReservationsController extends Controller
       //
       //
       // \App\Reservation::create($validated);
-      // VRATIT SE NA OVAJ NAČIN KAD SE RIJEŠI total_price??
+      // VRATIT SE NA OVAJ NAÄŚIN KAD SE RIJEĹ I total_price??
 
 
 
-      return redirect ('/reservations');
+      //return redirect ('/reservations');
     }
 
 
     public function show(\App\Reservation $reservation)
     {
-      return view ('/reservations/show',compact('reservation'));
+      //return view ('/reservations/show',compact('reservation'));
+      return response()->json($reservation);
     }
 
 
     public function destroy(\App\Reservation $reservation)
     {
       $reservation->delete();
-      return redirect ('/reservations');
+      //return redirect ('/reservations');
+      return response()->json($reservation);
     }
+
 }

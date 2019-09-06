@@ -11,7 +11,7 @@ class UnitsController extends Controller
 
       $units = \App\Unit::all();
 
-      return view('/units/index', compact('units'));
+      return response()->json($units);
 
     }
 
@@ -19,33 +19,34 @@ class UnitsController extends Controller
     public function create()
     {
       $units = \App\Unit::all();
-      return view('/units/create');
+      //return view('/units/create');
+      return response()->json($units);
     }
 
 
     public function show(\App\Unit $unit)
     {
-      return view ('/units/show',compact('unit'));
+      return response()->json($unit);
     }
 
 
     public function edit(\App\Unit $unit)
     {
-      return view ('/units/edit',compact('unit'));
+      return response()->json($unit);
     }
 
 
     public function update(\App\Unit $unit)
     {
       $unit->update(request(['name','max_persons','price_per_night']));
-      return redirect ('/units');
+      //return redirect ('/units');
     }
 
 
     public function destroy(\App\Unit $unit)
     {
       $unit->delete();
-      return redirect ('/units');
+      //return redirect ('/units');
     }
 
 
@@ -67,8 +68,9 @@ class UnitsController extends Controller
       //
       // $unit->save();
 
-      return redirect ('/units');
+      //return redirect ('/units');
     }
+
 
 
 

@@ -16,15 +16,15 @@ Route::get('/',function (){
   return view ('home');
 });
 
-Route::resource('units','UnitsController');
+//Route::resource('units','UnitsController');
 
-// Route::get('/units', 'UnitsController@index' );
-// Route::post('/units', 'UnitsController@store' );
-// Route::get('/units/create', 'UnitsController@create' );
-// Route::get('/units/{unit}', 'UnitsController@show' );
-// Route::get('/units/{unit}/edit', 'UnitsController@edit' );
-// Route::patch('/units/{unit}', 'UnitsController@update' );
-// Route::delete('/units/{unit}', 'UnitsController@destroy' );
+Route::get('/units', 'UnitsController@index' );
+Route::post('/units', 'UnitsController@store' );
+Route::get('/units/create', 'UnitsController@create' );
+Route::get('/units/{unit}', 'UnitsController@show' );
+Route::get('/units/{unit}/edit', 'UnitsController@edit' );
+Route::put('/units/{unit}', 'UnitsController@update' );
+Route::delete('/units/{unit}', 'UnitsController@destroy' );
 
 Route::get('/reservations', 'ReservationsController@index' );
 Route::get('/reservations/{reservation}', 'ReservationsController@show' );
