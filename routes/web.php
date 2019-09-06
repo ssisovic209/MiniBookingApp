@@ -31,3 +31,5 @@ Route::get('/reservations/{reservation}', 'ReservationsController@show' );
 Route::get('/reservations/create', 'ReservationsController@create' );
 Route::post('/reservations', 'ReservationsController@store' );
 Route::delete('/reservations/{reservation}', 'ReservationsController@destroy' );
+
+Route::get('/getBlockedDates', 'ReservationsController@getBlockedDates');

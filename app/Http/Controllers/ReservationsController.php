@@ -18,7 +18,7 @@ public function index()
     public function create()
     {
       $reservations = \App\Reservation::all();
-      //return view('/reservations/create');
+
       return response()->json($reservations);
     }
 
@@ -35,36 +35,42 @@ public function index()
       $reservation->date_to = request('date_to');
       $reservation->email = request('email');
 
+      //calculate total price
       $diff =strtotime($reservation->date_from)-strtotime($reservation->date_to);
       $reservation->total_price = $reservation->unit->price_per_night*abs(round($diff/86400));
-      // 1 day = 24 hours ,  24 * 60 * 60 = 86400 seconds
 
-      $reservation->save();
-      //return response()->json($reservation);
+      //check if already taken
+      $blockedDates = $this->getBlockedDates();
 
-      // $validated=request()->validate([
-      //   'date_from'=> ['required'],
-      //   'date_to' => ['required'],
-      //   'first_name' => ['required'],
-      //   'last_name' => ['required'],
-      //   'email' => ['required'],
-      //   'unit_id' => ['required'],
-      //   'total_price' => ['required']
-      // ]);
-      //
-      //
-      // \App\Reservation::create($validated);
-      // VRATIT SE NA OVAJ NAÄŚIN KAD SE RIJEĹ I total_price??
+      $taken=false;
+
+      $tmp = $reservation->date_from;
+      while(strtotime($tmp) < strtotime($reservation->date_to))
+      {
+        if (in_array($tmp, $blockedDates))
+        {
+            $taken=true;
+            break;
+        } 
+        $tmp= date("Y-m-d",strtotime("+1 day",strtotime($tmp)));
+      }
+
+      if($taken)
+      {
+         return "Dates are not available";
+      }
+      else
+      {
+          $reservation->save();
+      }
 
 
-
-      //return redirect ('/reservations');
     }
 
 
     public function show(\App\Reservation $reservation)
     {
-      //return view ('/reservations/show',compact('reservation'));
+
       return response()->json($reservation);
     }
 
@@ -72,8 +78,28 @@ public function index()
     public function destroy(\App\Reservation $reservation)
     {
       $reservation->delete();
-      //return redirect ('/reservations');
+
       return response()->json($reservation);
+    }
+
+    public function getBlockedDates()
+    {
+      $reservations = \App\Reservation::all();
+
+      $array = array(); 
+
+        foreach ($reservations as $res) {
+            
+          $tmp = $res->date_from;
+          while(strtotime($tmp) < strtotime($res->date_to))
+          {
+            $array[] = date('Y-m-d', strtotime($tmp));
+            $tmp= date("Y-m-d",strtotime("+1 day",strtotime($tmp)));
+          }
+        }
+      
+        return response()->json($array);
+        return $array;
     }
 
 }

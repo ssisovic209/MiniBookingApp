@@ -71,7 +71,4 @@ class UnitsController extends Controller
       //return redirect ('/units');
     }
 
-
-
-
-}
+  }
